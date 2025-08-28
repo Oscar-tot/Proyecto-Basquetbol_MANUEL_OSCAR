@@ -1,0 +1,150 @@
+<div class="marcador-baloncesto">
+  <!-- Cabecera del marcador -->
+  <div class="cabecera-marcador">
+    <h1 class="titulo-principal">{{ titulo() }}</h1>
+    <div class="indicador-periodo">
+      <span class="etiqueta-periodo">{{ obtenerNombrePeriodo() }}</span>
+    </div>
+  </div>
+
+  <!-- Mensajes de estado -->
+  <div class="estado-partido" *ngIf="mensajeEstado()">
+    <div class="mensaje-estado" [class.guardando]="guardando()">
+      <i class="material-icons" *ngIf="guardando()">hourglass_empty</i>
+      <span>{{ mensajeEstado() }}</span>
+    </div>
+  </div>
+
+  <!-- Pantalla principal del marcador -->
+  <div class="pantalla-principal">
+    <!-- Equipo Local -->
+    <div class="equipo-panel equipo-local">
+      <div class="nombre-equipo">{{ equipoLocal() }}</div>
+      <div class="puntuacion-principal">{{ puntuacionLocal() }}</div>
+      <div class="estadisticas-equipo">
+        <div class="faltas-panel">
+          <span class="etiqueta-estadistica">F</span>
+          <span class="valor-estadistica">{{ faltasLocal() }}</span>
+        </div>
+        <div class="tiempos-muertos-panel">
+          <span class="etiqueta-estadistica">T</span>
+          <span class="valor-estadistica">{{ tiemposMuertosLocal() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Centro - Temporizador -->
+    <div class="panel-central">
+      <div class="temporizador-principal" [class.activo]="estaCorriendo()">
+        <div class="tiempo-display">{{ formatearTiempo(tiempo()) }}</div>
+        <div class="controles-temporizador">
+          <button class="btn-control btn-iniciar" (click)="iniciarTemporizador()" [disabled]="estaCorriendo() || tiempo() === 0">
+            <i class="material-icons">play_arrow</i>
+          </button>
+          <button class="btn-control btn-pausar" (click)="pausarTemporizador()" [disabled]="!estaCorriendo()">
+            <i class="material-icons">pause</i>
+          </button>
+          <button class="btn-control btn-reiniciar" (click)="reiniciarTemporizador()">
+            <i class="material-icons">refresh</i>
+          </button>
+        </div>
+      </div>
+      <div class="controles-periodo">
+        <button class="btn-periodo" (click)="periodoAnterior()" [disabled]="periodo() === 1">
+          <i class="material-icons">arrow_back</i>
+        </button>
+        <button class="btn-periodo" (click)="siguientePeriodo()" [disabled]="periodo() === maximosPeriodos">
+          <i class="material-icons">arrow_forward</i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Equipo Visitante -->
+    <div class="equipo-panel equipo-visitante">
+      <div class="nombre-equipo">{{ equipoVisitante() }}</div>
+      <div class="puntuacion-principal">{{ puntuacionVisitante() }}</div>
+      <div class="estadisticas-equipo">
+        <div class="faltas-panel">
+          <span class="etiqueta-estadistica">F</span>
+          <span class="valor-estadistica">{{ faltasVisitante() }}</span>
+        </div>
+        <div class="tiempos-muertos-panel">
+          <span class="etiqueta-estadistica">T</span>
+          <span class="valor-estadistica">{{ tiemposMuertosVisitante() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de control inferior -->
+  <div class="panel-control-inferior">
+    <!-- Controles de Equipos -->
+    <div class="controles-equipos">
+      <!-- Equipo Local -->
+      <div class="controles-equipo">
+        <h3>Equipo Local</h3>
+
+        <!-- Botones de puntuación -->
+        <div class="botones-puntuacion">
+          <button class="btn-punto" (click)="agregarPuntos('local', 3)">+3</button>
+          <button class="btn-punto" (click)="agregarPuntos('local', 2)">+2</button>
+          <button class="btn-punto" (click)="agregarPuntos('local', 1)">+1</button>
+          <button class="btn-punto btn-restar" (click)="restarPuntos('local', 1)">-1</button>
+        </div>
+
+        <!-- Controles de estadísticas -->
+        <div class="controles-estadisticas">
+          <button class="btn-estadistica" (click)="agregarFalta('local')" [disabled]="faltasLocal() === maximasFaltas">
+            <i class="material-icons">add</i>
+            <span>Falta</span>
+          </button>
+          <button class="btn-estadistica" (click)="restarFalta('local')" [disabled]="faltasLocal() === 0">
+            <i class="material-icons">remove</i>
+            <span>Falta</span>
+          </button>
+          <button class="btn-estadistica" (click)="usarTiempoMuerto('local')" [disabled]="tiemposMuertosLocal() === 0">
+            <i class="material-icons">timer</i>
+            <span>Tiempo Muerto</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Controles Generales del Partido -->
+      <div class="controles-generales">
+        <button class="btn-reiniciar-partido" (click)="reiniciarMarcador()">
+          <i class="material-icons">refresh</i>
+          <span>Reiniciar Partido</span>
+        </button>
+      </div>
+
+      <!-- Equipo Visitante -->
+      <div class="controles-equipo">
+        <h3>Equipo Visitante</h3>
+
+        <!-- Botones de puntuación -->
+        <div class="botones-puntuacion">
+          <button class="btn-punto" (click)="agregarPuntos('visitante', 3)">+3</button>
+          <button class="btn-punto" (click)="agregarPuntos('visitante', 2)">+2</button>
+          <button class="btn-punto" (click)="agregarPuntos('visitante', 1)">+1</button>
+          <button class="btn-punto btn-restar" (click)="restarPuntos('visitante', 1)">-1</button>
+        </div>
+
+        <!-- Controles de estadísticas -->
+        <div class="controles-estadisticas">
+          <button class="btn-estadistica" (click)="agregarFalta('visitante')" [disabled]="faltasVisitante() === maximasFaltas">
+            <i class="material-icons">add</i>
+            <span>Falta</span>
+          </button>
+          <button class="btn-estadistica" (click)="restarFalta('visitante')" [disabled]="faltasVisitante() === 0">
+            <i class="material-icons">remove</i>
+            <span>Falta</span>
+          </button>
+          <button class="btn-estadistica" (click)="usarTiempoMuerto('visitante')" [disabled]="tiemposMuertosVisitante() === 0">
+            <i class="material-icons">timer</i>
+            <span>Tiempo Muerto</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
