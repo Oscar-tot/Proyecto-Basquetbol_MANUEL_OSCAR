@@ -1,59 +1,94 @@
-# BasketballScoreboard
+# Marcador de Baloncesto (Frontend Angular)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.1.
+Aplicación web para gestionar el marcador de partidos de baloncesto en tiempo real. Desarrollada con Angular 20 y TypeScript.
 
-## Development server
+## Características
 
-To start a local development server, run:
+- Marcador en tiempo real con temporizador y control de períodos.
+- Gestión de faltas y tiempos muertos para ambos equipos.
+- Persistencia de datos mediante integración con backend (API REST).
+- Interfaz moderna y responsiva con Material Icons y fuente Silkscreen.
+- Preparada para despliegue en Docker y Nginx.
 
-```bash
-ng serve
-```
+## Requisitos
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js 18+
+- npm
+- Angular CLI (`npm install -g @angular/cli`)
+- Docker (opcional, para despliegue)
 
-## Code scaffolding
+## Instalación
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. Clona el repositorio:
+   ```bash
+   git clone <url-del-repositorio>
+   cd front-proyecto1-desaweb
+   ```
 
-```bash
-ng generate component component-name
-```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Ejecución en desarrollo
 
 ```bash
-ng test
+npm start
+```
+Accede a [http://localhost:4200](http://localhost:4200) en tu navegador.
+
+## Scripts disponibles
+
+- `npm start` - Ejecuta el servidor de desarrollo.
+- `npm run build` - Compila la aplicación para producción.
+- `npm test` - Ejecuta los tests unitarios.
+
+## Estructura del proyecto
+
+```
+src/
+├── app/
+│   ├── services/
+│   │   └── partido.service.ts
+│   ├── app.ts
+│   ├── app.html
+│   ├── app.css
+│   └── app.config.ts
+├── environments/
+│   ├── environment.ts
+│   └── environment.prod.ts
+├── main.ts
+├── styles.css
+└── index.html
 ```
 
-## Running end-to-end tests
+## Docker
 
-For end-to-end (e2e) testing, run:
+Para construir y ejecutar el frontend con Docker:
 
 ```bash
-ng e2e
+docker build -t basketball-scoreboard .
+docker run -p 4200:80 basketball-scoreboard
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+O usando Docker Compose:
 
-## Additional Resources
+```bash
+docker-compose up --build
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Variables de entorno
+
+Configura las variables en `.env` (puedes copiar desde `.env.example`).
+
+## Integración con backend
+
+El frontend está preparado para conectarse a un backend REST en `http://localhost:5260/api/scoreboard`. Puedes modificar la URL en el servicio [`PartidoService`](src/app/services/partido.service.ts).
+
+## Contribuir
+
+¡Las contribuciones son bienvenidas! Abre un issue o pull request para sugerencias y mejoras.
+
+## Licencia
+
+Este proyecto está bajo la licencia
